@@ -1,4 +1,7 @@
+import com.sun.tools.javac.comp.Todo;
+
 import java.math.BigInteger;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 class SystemNumberConverter {
@@ -8,12 +11,13 @@ class SystemNumberConverter {
     private static String validCharacterString;
     private String numberX;
     private String numberY;
-
     private int sysX, sysY;
 
     public void runConverter() {
+        System.out.println("Это программа для конвертации числа из одной системы исчисления в другую");
         boolean flag1;
         boolean flag2 = true;
+        //TODO  общий метод для отслеживания строки ввода и возможность возврата выхода из программы
         do {
             System.out.println("Введите основание исходной системы исчисления (от 2-х до " + MAX_NUMBER_SYS
                     + "): ");
@@ -25,10 +29,10 @@ class SystemNumberConverter {
             do {
                 int response = setNumberX(sysX);
                 switch (response) {
-                    case 1:
+                    case 1: //выход из этапа ввода числа
                         flag1 = false;
                         continue;
-                    case 2:
+                    case 2: //вывод информации о текущих системах исчислений
                         getInfo();
                         continue;
                 }
@@ -60,7 +64,7 @@ class SystemNumberConverter {
     }
 
     public void getInfo() {
-        System.out.printf("Сейчас заданы системы: x = %d, y = %d\n", sysX, sysY);
+        System.out.printf("Сейчас заданы системы: x = %d, y = %d\n", getSysX(), getSysY());
     }
 
     public void setSysX(String sysX) {
@@ -104,10 +108,13 @@ class SystemNumberConverter {
         return true;
     }
 
+    private String getStringFromUser() {
+        Scanner scan = new Scanner(System.in);
+        return scan.nextLine();
+    }
     private int setNumberX(int sysX) {
         System.out.println("Введите число в " + sysX + "-ичной системе или 'q' для выбора систем исчисления");
-        Scanner scan = new Scanner(System.in);
-        numberX = scan.nextLine();
+        numberX = getStringFromUser();
         switch (numberX) {
             case "q":
                 return 1;
@@ -122,12 +129,8 @@ class SystemNumberConverter {
     }
 
     private int inputInt() {
-        Scanner sc = new Scanner(System.in);
-        String strNum;
-        int num;
         try {
-            strNum = sc.nextLine();
-            num = Integer.parseInt(strNum);
+            int num = Integer.parseInt(getStringFromUser());
             if (num >= 2 & num <= MAX_NUMBER_SYS) {
                 return num;
             } else {
